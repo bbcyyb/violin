@@ -9,3 +9,8 @@
 class ViolinScraperPipeline:
     def process_item(self, item, spider):
         return item
+
+class ImagespiderPipeline(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        for url in item['url']:
+            yield Request(url)

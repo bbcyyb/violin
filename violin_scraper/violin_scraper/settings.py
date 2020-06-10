@@ -62,11 +62,14 @@ ROBOTSTXT_OBEY = True
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
+IMAGES_STORE = 'ImageStore'
+
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
+ITEM_PIPELINES = {
 #    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
-#}
+    'violin_scraper.pipelines.ImagespiderPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

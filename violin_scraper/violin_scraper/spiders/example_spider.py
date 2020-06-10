@@ -44,7 +44,9 @@ class ExampleSpider(scrapy.Spider):
                 f.write('\n------\n')
                 f.close()
 
-        next_page = response.css('li.next a::attr(href)').extract_first()
+        # next_page = response.css('li.next a::attr(href)').extract_first()
+        next_page = response.xpath("//ol/li[@class='next']/a/@href").extract_first()
+
         if next_page is not None:
             next_page = response.urljoin(next_page)
             yield scrapy.Request(next_page, callback=self.parse)
