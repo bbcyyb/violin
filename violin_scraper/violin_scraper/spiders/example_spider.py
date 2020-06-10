@@ -17,8 +17,8 @@ class ExampleSpider(scrapy.Spider):
     def parse_(self, response):
         for quote in response.css('div.quote'):
             yield {
-                '内容': quote.css('span.text::text').extract_first(),
-                '作者': quote.xpath('span/small/text()').extract_first(),
+                'Conent': quote.css('span.text::text').extract_first(),
+                'Author': quote.xpath('span/small/text()').extract_first(),
             }
 
         next_page = response.css('li.next a::attr("href")').extract_first()
@@ -34,13 +34,13 @@ class ExampleSpider(scrapy.Spider):
             tags = v.css('.tags .tag::text').extract()
             tags = ','.join(tags)
 
-            fileName = '%s-语录.txt' % autor
+            fileName = '%s-ana.txt' % autor
 
             with open(fileName, "a+", encoding="utf-8") as f:
                 self.logger.info('[======>] %s' % text)
                 f.write(text)
                 f.write('\n')
-                f.write('标签：' + tags)
+                f.write('Tags: ' + tags)
                 f.write('\n------\n')
                 f.close()
 
@@ -48,4 +48,3 @@ class ExampleSpider(scrapy.Spider):
         if next_page is not None:
             next_page = response.urljoin(next_page)
             yield scrapy.Request(next_page, callback=self.parse)
-    
