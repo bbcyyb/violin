@@ -12,3 +12,6 @@ class ViolinScraperItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+class SlctItem(scrapy.Item):
+    name = scrapy.Field()
+    img_url = scrapy.Field()

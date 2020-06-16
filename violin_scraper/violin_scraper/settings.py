@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'violin_scraper.spiders'
 #USER_AGENT = 'violin_scraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -62,13 +62,11 @@ ROBOTSTXT_OBEY = True
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
-IMAGES_STORE = 'ImageStore'
-
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
-    'violin_scraper.pipelines.ImagespiderPipeline': 300,
+    # 'violin_scraper.pipelines.ImagespiderPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
