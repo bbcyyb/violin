@@ -66,8 +66,11 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
-    # 'violin_scraper.pipelines.ImagespiderPipeline': 300,
+     'violin_scraper.pipelines.ImagespiderPipeline': 300,
 }
+
+import os
+IMAGES_STORE=os.path.join(os.path.dirname(os.path.dirname(__file__)),'images')
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
