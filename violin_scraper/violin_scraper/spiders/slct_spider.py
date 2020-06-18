@@ -23,8 +23,6 @@ class SlctSpider(scrapy.Spider):
         if self.debug is True:
             detail_url = detail_list[0]
             detail_url = response.urljoin(detail_url)
-            print('=============> detail url')
-            print(detail_url)
             yield scrapy.Request(detail_url, callback = self.parse_detail)
         else:
             for detail_url in detail_list:
@@ -46,7 +44,5 @@ class SlctSpider(scrapy.Spider):
             item = SlctItem()
             item['name'] = img_selector.css('img::attr(alt)').extract_first()
             img_url = response.urljoin(img_selector.css('img::attr(src)').extract_first())
-            print('=============> image url')
-            print(img_url)
             item['img_url'] = [img_url]
             yield item

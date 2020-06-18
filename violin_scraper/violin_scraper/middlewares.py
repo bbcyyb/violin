@@ -57,7 +57,6 @@ class ViolinScraperSpiderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
-
 class ViolinScraperDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
@@ -104,9 +103,17 @@ class ViolinScraperDownloaderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
-
 class ProxyMiddleware:
     def process_request(self, request, spider):
-        if settings['PROXIES']:
-            proxy = random.choice(settings['PROXIES'])
+        proxy_pool = settings['PROXIES']
+        if proxy_pool and len(proxy_pool) > 0:
+            proxy = random.choice(proxy_pool)
             request.meta['proxy'] = proxy
+
+class UAMiddleware:
+    def process_request(self, request, spider):
+        ua_pool = settings['USER_AGENT_LIST']
+        if ua_pool and len(ua_pool) > 0:
+            ua = random.choice(ua_pool)
+            request.headers['User-Agent'] = ua
+
