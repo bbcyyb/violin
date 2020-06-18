@@ -9,7 +9,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # os.path.dirname() get location of parent
 
 spiders = []
-spiders.append('slct')
+# spiders.append('slct')
+spiders.append('example')
 
 for spider_name in spiders:
     execute(['scrpy', 'crawl', spider_name])

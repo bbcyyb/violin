@@ -14,7 +14,7 @@ class ExampleSpider(scrapy.Spider):
 
         yield scrapy.Request(url, self.parse)
 
-    def parse_(self, response):
+    def parse(self, response):
         for quote in response.css('div.quote'):
             yield {
                 'Conent': quote.css('span.text::text').extract_first(),
@@ -25,7 +25,7 @@ class ExampleSpider(scrapy.Spider):
         if next_page is not None:
             yield scrapy.Request(next_page, self.parse)
 
-    def parse(self, response):
+    def parse_(self, response):
         mingyan = response.css('div.quote')
 
         for v in mingyan:

@@ -6,7 +6,6 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from scrapy.conf import settings
 
 import random
 
@@ -105,14 +104,14 @@ class ViolinScraperDownloaderMiddleware:
 
 class ProxyMiddleware:
     def process_request(self, request, spider):
-        proxy_pool = settings['PROXIES']
+        proxy_pool = spider.settings['PROXIES']
         if proxy_pool and len(proxy_pool) > 0:
             proxy = random.choice(proxy_pool)
             request.meta['proxy'] = proxy
 
 class UAMiddleware:
     def process_request(self, request, spider):
-        ua_pool = settings['USER_AGENT_LIST']
+        ua_pool = spider.settings['USER_AGENT_LIST']
         if ua_pool and len(ua_pool) > 0:
             ua = random.choice(ua_pool)
             request.headers['User-Agent'] = ua

@@ -40,9 +40,11 @@ class SlctSpider(scrapy.Spider):
 
         # image page
         img_selector_list = response.css('div.content_left p img')
+        title = response.css('div.item_title h1::text').extract_first()
         for img_selector in img_selector_list:
             item = SlctItem()
-            item['name'] = img_selector.css('img::attr(alt)').extract_first()
+            # item['name'] = img_selector.css('img::attr(alt)').extract_first()
+            item['name'] = title
             img_url = response.urljoin(img_selector.css('img::attr(src)').extract_first())
             item['img_url'] = [img_url]
             yield item

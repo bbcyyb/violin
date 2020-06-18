@@ -54,8 +54,8 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
 #    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
-    'violin_scraper.middleware.ProxyMiddleware': 543,
-    'violin_scraper.middleware.UAMiddleware': 544,
+    'violin_scraper.middlewares.ProxyMiddleware': 543,
+    'violin_scraper.middlewares.UAMiddleware': 544,
 
 
     # Decommissioned Middleware
