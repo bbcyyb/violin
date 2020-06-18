@@ -6,7 +6,9 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.conf import settings
 
+import random
 
 class ViolinScraperSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -101,3 +103,10 @@ class ViolinScraperDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class ProxyMiddleware:
+    def process_request(self, request, spider):
+        if settings['PROXIES']:
+            proxy = random.choice(settings['PROXIES'])
+            request.meta['proxy'] = proxy
