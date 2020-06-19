@@ -16,7 +16,7 @@ class SlctSpider(scrapy.Spider):
         next_url = response.css('div.update_area div.update_area_content nav.navigation div.nav-links a.next::attr(href)').extract_first()
         if next_url is not None:
             next_url = response.urljoin(next_url)
-            # yield scrapy.Request(next_url, callback = self.parse)
+            yield scrapy.Request(next_url, callback = self.parse)
 
         # detail page
         detail_list = response.css('div.update_area div.update_area_content ul.update_area_lists li a::attr(href)').extract()
@@ -36,14 +36,13 @@ class SlctSpider(scrapy.Spider):
         next_url = response.css('div.content_left div.nav-links a.prev::attr(href)').extract_first()
         if next_url is not None:
             next_url = response.urljoin(next_url)
-            # yield scrapy.Request(next_url, callback = self.parse_detail)
+            yield scrapy.Request(next_url, callback = self.parse_detail)
 
         # image page
         img_selector_list = response.css('div.content_left p img')
         title = response.css('div.item_title h1::text').extract_first()
         for img_selector in img_selector_list:
             item = SlctItem()
-            # item['name'] = img_selector.css('img::attr(alt)').extract_first()
             item['name'] = title
             img_url = response.urljoin(img_selector.css('img::attr(src)').extract_first())
             item['img_url'] = [img_url]
