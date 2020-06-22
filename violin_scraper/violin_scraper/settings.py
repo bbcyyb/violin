@@ -9,11 +9,31 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import datetime
+
+
 BOT_NAME = 'violin_scraper'
 
 SPIDER_MODULES = ['violin_scraper.spiders']
 NEWSPIDER_MODULE = 'violin_scraper.spiders'
 
+#=======================================================================
+# Logging
+#=======================================================================
+to_day = datetime.datetime.now()
+log_file_path = 'logs/scrapy_{}_{}_{}.log'.format(to_day.year, to_day.month, to_day.day)
+
+LOG_ENABLED = True
+LOG_ENCODING = 'utf-8'
+LOG_FILE = log_file_path
+LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
+# CRITICAL, ERROR, WARNING, INFO, DEBUG
+LOG_LEVEL = 'DEBUG'
+# If True, all standard output (and error) of your process will be redirected to the log. For example if you print('hello') it will appear in the Scrapy log.
+LOG_STDOUT = False
+# If True, the logs will just contain the root path. If it is set to False then it displays the component responsible for the log output
+LOG_SHORT_NAMES = False
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'violin_scraper (+http://www.yourdomain.com)'
@@ -53,6 +73,8 @@ DOWNLOAD_DELAY = 1
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
+    'violin_scraper.middlewares.StartingDownloadMiddleware': 1,
+
 #    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
     'violin_scraper.middlewares.ProxyMiddleware': 543,
     'violin_scraper.middlewares.UAMiddleware': 544,
@@ -61,6 +83,9 @@ DOWNLOADER_MIDDLEWARES = {
     # Decommissioned Middleware
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
+
+
+    'violin_scraper.middlewares.EndingDownloadMiddleware': 999,
 }
 
 # Enable or disable extensions

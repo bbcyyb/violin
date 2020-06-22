@@ -22,6 +22,11 @@ class ExampleSpider(scrapy.Spider):
             }
 
         next_page = response.css('li.next a::attr("href")').extract_first()
+
+        # for debug
+        from scrapy.shell import inspect_response
+            inspect_response(response, self)
+
         if next_page is not None:
             yield scrapy.Request(next_page, self.parse)
 
