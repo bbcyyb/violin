@@ -116,20 +116,30 @@ class UAMiddleware:
             ua = random.choice(ua_pool)
             request.headers['User-Agent'] = ua
 
+class ExtractUrlMiddlware:
+    def process_response(self, request, response, spider):
+        record = '[{}] {}'.format(response.status, response.url)
+        if response.status == 200:
+            pass
+        else:
+            pass
+
 class StartingDownloadMiddleware:
     def process_request(self, request, spider):
-        spider.logger.info("StartingDownloadMiddleware.process_request")
-        return None
+        spider.logger.info("==========> 1")
 
     def process_response(self, request, response, spider):
-        spider.logger.info("StartingDownloadMiddleware.process_response")
+        spider.logger.info("==========> 2")
         return response
 
 class EndingDownloadMiddleware:
     def process_request(self, request, spider):
-        spider.logger.info("EndingDownloadMiddleware.process_request")
-        return None
+        spider.logger.info("==========> 3")
 
     def process_response(self, request, response, spider):
-        spider.logger.info("EndingDownloadMiddleware.process_response")
+        spider.logger.info("==========> 4")
         return response
+
+    def process_exception(self, request, exception, spider):
+        spider.logger.error(request.url)
+        return request;
