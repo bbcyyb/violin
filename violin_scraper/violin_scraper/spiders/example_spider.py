@@ -10,20 +10,13 @@ class ExampleSpider(BaseSpider):
     custom_settings = {
         'LOG_FILE': None,
         'DOWNLOADER_MIDDLEWARES': {
-            'violin_scraper.middlewares.StartingDownloadMiddleware': 1,
-            'violin_scraper.middlewares.EndingDownloadMiddleware': 999,
+            'violin_scraper.middlewares.StartingDownloadMiddleware': 99,
+            'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
+            'violin_scraper.middlewares.EndingDownloadMiddleware': 899,
         },
         'ITEM_PIPELINES': {
         },
     }
-
-    def start_requests(self):
-        url = 'http://lab.scrapyd.cn/'
-        tag = getattr(self, 'tag', None)
-        if tag is not None:
-            url = "%stag/%s" % (url, tag)
-
-        yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
         for quote in response.css('div.quote'):

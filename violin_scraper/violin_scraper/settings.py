@@ -9,6 +9,7 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
 import datetime
 
 
@@ -29,7 +30,7 @@ LOG_FILE = log_file_path
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 # CRITICAL, ERROR, WARNING, INFO, DEBUG
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 # If True, all standard output (and error) of your process will be redirected to the log. For example if you print('hello') it will appear in the Scrapy log.
 LOG_STDOUT = False
 # If True, the logs will just contain the root path. If it is set to False then it displays the component responsible for the log output
@@ -73,9 +74,8 @@ DOWNLOAD_DELAY = 1
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'violin_scraper.middlewares.StartingDownloadMiddleware': 1,
-
 #    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
+    'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
     'violin_scraper.middlewares.ProxyMiddleware': 543,
     'violin_scraper.middlewares.UAMiddleware': 544,
 
@@ -83,9 +83,6 @@ DOWNLOADER_MIDDLEWARES = {
     # Decommissioned Middleware
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
-
-
-    'violin_scraper.middlewares.EndingDownloadMiddleware': 999,
 }
 
 # Enable or disable extensions
@@ -128,7 +125,6 @@ HTTPCACHE_ENABLED = True
 # Customize
 #=======================================================================
 
-import os
 IMAGES_STORE=os.path.join(os.path.dirname(os.path.dirname(__file__)),'images')
 
 

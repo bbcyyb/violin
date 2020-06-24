@@ -4,9 +4,10 @@ from enum import Enum
 import os
 
 def inspect(response, spider):
-    spider.logger.info('========> Start inspecting')
-    shell.inspect_response(response, spider)
-    spider.logger.info('<======== Finish inspecting')
+    if spider.debug_mode:
+        spider.logger.debug('========> Start inspecting')
+        shell.inspect_response(response, spider)
+        spider.logger.debug('<======== Finish inspecting')
 
 def running_path():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

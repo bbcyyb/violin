@@ -9,10 +9,10 @@ class BaseSpider(scrapy.Spider):
         except (ValueError, TypeError):
             self.logger.warning("Incorrect type conversion, debug={}".format(debug))
         debug = debug_int if debug_int > 0 else 0
-        self._debug_mode = bool(debug)
-        self.logger.info('Debug Mode is {}'.format('Opened' if self._debug_mode else 'Closed'))
+        self.debug_mode = bool(debug)
+        self.logger.info('Debug Mode is {}'.format('Opened' if self.debug_mode else 'Closed'))
 
-        if self._debug_mode:
+        if self.debug_mode:
             self.logger.setLevel(logging.DEBUG)
             self.logger.debug("==========================================================")
 

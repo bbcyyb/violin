@@ -1,15 +1,29 @@
 import scrapy
 from violin_scraper.base_spider import BaseSpider
 from violin_scraper.items import SlctItem
+from violin_scraper.utils import running_path
+
+import os
 
 class SlctSpider(BaseSpider):
-    debug = True
     name = 'slct'
     # start_urls = ['https://www.qxmhw.com/search-0-324.html'];
 
     # Test
     start_urls = ['https://zhuaicun.com/guonei/senluocaituan.html']
     allowed_domains = ['zhuaicun.com']
+
+    custom_settings = {
+        'DOWNLOADER_MIDDLEWARES': {
+            'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
+            'violin_scraper.middlewares.ProxyMiddleware': 543,
+            'violin_scraper.middlewares.UAMiddleware': 544,
+        },
+        'ITEM_PIPELINES': {
+            'violin_scraper.pipelines.ImagespiderPipeline': 300,
+        },
+        'IMAGES_STORE': os.path.join(os.path.dirname(os.path.dirname(running_path())),'images'),
+    }
 
     # parse list -> detail -> image
     def parse(self, response):
@@ -21,14 +35,9 @@ class SlctSpider(BaseSpider):
 
         # detail page
         detail_list = response.css('div.update_area div.update_area_content ul.update_area_lists li a::attr(href)').extract()
-        if self.debug is True:
-            detail_url = detail_list[0]
+        for detail_url in detail_list:
             detail_url = response.urljoin(detail_url)
             yield scrapy.Request(detail_url, callback = self.parse_detail)
-        else:
-            for detail_url in detail_list:
-                detail_url = response.urljoin(detail_url)
-                yield scrapy.Request(detail_url, callback = self.parse_detail)
 
     def parse_detail(self, response):
         name = response.css('div.item_title h1::text').extract_first()
