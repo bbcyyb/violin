@@ -1,11 +1,10 @@
 import scrapy
 from violin_scraper.base_spider import BaseSpider
 
+
 class ExampleSpider(BaseSpider):
     name = 'example'
-    start_urls = [
-         'http://lab.scrapyd.cn/'
-         ]
+    start_urls = ['http://lab.scrapyd.cn/']
 
     custom_settings = {
         'LOG_FILE': None,
@@ -14,8 +13,7 @@ class ExampleSpider(BaseSpider):
             'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
             'violin_scraper.middlewares.EndingDownloadMiddleware': 899,
         },
-        'ITEM_PIPELINES': {
-        },
+        'ITEM_PIPELINES': {},
     }
 
     def parse(self, response):
@@ -50,7 +48,8 @@ class ExampleSpider(BaseSpider):
                 f.close()
 
         # next_page = response.css('li.next a::attr(href)').extract_first()
-        next_page = response.xpath("//ol/li[@class='next']/a/@href").extract_first()
+        next_page = response.xpath(
+            "//ol/li[@class='next']/a/@href").extract_first()
 
         if next_page is not None:
             next_page = response.urljoin(next_page)
