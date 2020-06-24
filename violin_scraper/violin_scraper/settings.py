@@ -29,7 +29,7 @@ LOG_FILE = log_file_path
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 # CRITICAL, ERROR, WARNING, INFO, DEBUG
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 # If True, all standard output (and error) of your process will be redirected to the log. For example if you print('hello') it will appear in the Scrapy log.
 LOG_STDOUT = False
 # If True, the logs will just contain the root path. If it is set to False then it displays the component responsible for the log output

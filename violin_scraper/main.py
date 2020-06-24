@@ -13,7 +13,7 @@ def run():
     spiders.append('example')
 
     for spider_name in spiders:
-        execute(['scrpy', 'crawl', spider_name])
+        execute(['scrpy', 'crawl', spider_name, '-a', 'debug=1'])
 
 def test_file():
     path = running_path()
@@ -24,5 +24,5 @@ def test_file():
     f.close_file()
 
 if __name__ == "__main__":
-    # run() 
-    test_file()
+    run() 
+    # test_file()

@@ -1,6 +1,7 @@
 import scrapy
+from violin_scraper.base_spider import BaseSpider
 
-class ExampleSpider(scrapy.Spider):
+class ExampleSpider(BaseSpider):
     name = 'example'
     start_urls = [
          'http://lab.scrapyd.cn/'

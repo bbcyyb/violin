@@ -1,7 +1,8 @@
 import scrapy
+from violin_scraper.base_spider import BaseSpider
 from violin_scraper.items import SlctItem
 
-class SlctSpider(scrapy.Spider):
+class SlctSpider(BaseSpider):
     debug = True
     name = 'slct'
     # start_urls = ['https://www.qxmhw.com/search-0-324.html'];
