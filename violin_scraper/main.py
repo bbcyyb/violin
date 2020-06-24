@@ -5,6 +5,7 @@ from violin_scraper.utils import running_path
 import sys
 import os
 
+
 def run():
     path = running_path()
     sys.path.append(path)
@@ -15,6 +16,7 @@ def run():
     for spider_name in spiders:
         execute(['scrpy', 'crawl', spider_name, '-a', 'debug=1'])
 
+
 def test_file():
     path = running_path()
     file = os.path.join(path, 'test.txt')
@@ -23,6 +25,7 @@ def test_file():
     f.writeline('hahahaha', True)
     f.close_file()
 
+
 if __name__ == "__main__":
-    run() 
+    run()
     # test_file()

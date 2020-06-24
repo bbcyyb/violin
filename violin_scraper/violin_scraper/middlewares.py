@@ -20,6 +20,7 @@ import os
 import datetime
 import random
 
+
 class ViolinScraperSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -67,6 +68,7 @@ class ViolinScraperSpiderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
+
 class ViolinScraperDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
@@ -113,12 +115,14 @@ class ViolinScraperDownloaderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
+
 class ProxyMiddleware:
     def process_request(self, request, spider):
         proxy_pool = spider.settings['PROXIES']
         if proxy_pool and len(proxy_pool) > 0:
             proxy = random.choice(proxy_pool)
             request.meta['proxy'] = proxy
+
 
 class UAMiddleware:
     def process_request(self, request, spider):
@@ -127,18 +131,27 @@ class UAMiddleware:
             ua = random.choice(ua_pool)
             request.headers['User-Agent'] = ua
 
+
 class ProcessAllExceptionMiddlware:
-    ALL_EXCEPTIONS = (defer.TimeoutError, TimeoutError, DNSLookupError,
+    ALL_EXCEPTIONS = (
+                        defer.TimeoutError, TimeoutError, DNSLookupError,
                         ConnectionRefusedError, ConnectionDone, ConnectError,
                         ConnectionLost, TCPTimedOutError, ResponseFailed,
                         IOError, TunnelError)
 
     def process_response(self, request, response, spider):
         record = '[{}] {}'.format(response.status, response.url)
-        if str(response.status).startswith('3') or str(response.status).startswith('4') or str(response.status).startswith('5'):
+        if str(response.status).startswith('3') or \
+           str(response.status).startswith('4') or \
+           str(response.status).startswith('5'):
             f = File(spider.logger)
             to_day = datetime.datetime.now()
-            f.open_file(os.path.join(running_path(), 'unhandled_{}_{}_{}_{}.log'.format(spider.name, to_day.year, to_day.month, to_day.day)))
+            f.open_file(os.path.join(running_path(),
+                                     'unhandled_{}_{}_{}_{}.log'
+                                     .format(spider.name,
+                                             to_day.year,
+                                             to_day.month,
+                                             to_day.day)))
             f.writeline(record)
             f.close_file()
         return response
@@ -146,10 +159,11 @@ class ProcessAllExceptionMiddlware:
     def process_exception(self, request, exception, spider):
         if isinstance(exception, self.ALL_EXCEPTIONS):
             spider.logger.error('Got exception: {}'.format(exception))
-            response = HtmlResponse(url = 'exception')
+            response = HtmlResponse(url='exception')
             return response
-        
+
         spider.logger.error('Unhandled exception: {}'.format(exception))
+
 
 class StartingDownloadMiddleware:
     def process_request(self, request, spider):
@@ -158,6 +172,7 @@ class StartingDownloadMiddleware:
     def process_response(self, request, response, spider):
         spider.logger.info("==========> 1.response")
         return response
+
 
 class EndingDownloadMiddleware:
     def process_request(self, request, spider):
@@ -169,4 +184,4 @@ class EndingDownloadMiddleware:
 
     def process_exception(self, request, exception, spider):
         spider.logger.error(request.url)
-        return request;
+        return request
