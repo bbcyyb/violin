@@ -1,6 +1,8 @@
-- Extract URL with the different kind of http status and store into separate files.
-- Add a spider to collect or update free proxies information and store within database or redis.
-- Development mode
+DONE - Extract URL with the different kind of http status and store into separate files.
+- Add a spider to collect or update free proxies information 
+- Store proxies within database or redis.
+- Call baiduyun API to upload or download files.
+DONE - Development mode
 - Containerization
 - Distributed
 - K8S
@@ -12,3 +14,18 @@ https://wall.alphacoders.com
 * Love Hina漫画
 
 http://www.10fuli.com/acgzhuanqu/shenshifuli/
+
+
+可以用来测试代理的可用性
+http://httpbin.org/
+
+免费代理网站
+http://www.66ip.cn/areaindex_1/1.html
+
+https://www.xicidaili.com/
+
+代理池方案，
+1. 定时读取免费代理网站，例如66ip.cn，获取ip, port, location, type, last verified time。
+2. 获取验证时间不超过3天的IP，并去重。
+3.IP+端口+代理位置+代理类型决定一条具体的proxy
+4.每个地区代理抓取前3页即可，里面有大量重复内容，需要算法去重。
