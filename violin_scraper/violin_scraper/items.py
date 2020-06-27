@@ -11,7 +11,16 @@ import scrapy
 class ViolinScraperItem(scrapy.Item):
     pass
 
+
 class SlctItem(scrapy.Item):
     name = scrapy.Field()
     img_url = scrapy.Field()
     image_paths = scrapy.Field()
+
+
+class ProxyItem(scrapy.Item):
+    ip = scrapy.Field()
+    port = scrapy.Field()
+    location = scrapy.Field()
+    kind = scrapy.Field()
+    last_verify_time = scrapy.Field()

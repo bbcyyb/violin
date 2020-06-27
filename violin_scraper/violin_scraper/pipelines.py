@@ -10,9 +10,11 @@ from scrapy.exceptions import DropItem
 from scrapy.http import Request
 import re
 
+
 class ViolinScraperPipeline:
     def process_item(self, item, spider):
         return item
+
 
 class ImagespiderPipeline(ImagesPipeline):
     #
@@ -33,9 +35,9 @@ class ImagespiderPipeline(ImagesPipeline):
     #     return filename
     def get_media_requests(self, item, info):
         for img_url in item['img_url']:
-            yield Request(img_url, meta = {'item': item['name']})
+            yield Request(img_url, meta={'item': item['name']})
 
-    def file_path(self, request, response = None, info = None):
+    def file_path(self, request, response=None, info=None):
         name = request.meta['item']
         # name = filter(lambd x: x not in '()0123456789', name)
         name = re.sub(r'[？ \\*]“<>:/()0123456789', '', name)
@@ -49,3 +51,8 @@ class ImagespiderPipeline(ImagesPipeline):
             raise DropItem('Item container no images')
         # item['img_paths'] = img_path
         return item
+
+
+class ProxyPipeline:
+    def process_item(self, item, spider):
+        pass

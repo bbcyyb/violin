@@ -1,5 +1,6 @@
 DONE - Extract URL with the different kind of http status and store into separate files.
 - Add a spider to collect or update free proxies information 
+- Rewite retry middleware
 - Store proxies within database or redis.
 - Call baiduyun API to upload or download files.
 DONE - Development mode
