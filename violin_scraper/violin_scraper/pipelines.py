@@ -8,7 +8,12 @@
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 from scrapy.http import Request
+from violin_scraper.items import ProxyItem
+from violin_scraper.utils import (File, str_to_datetime)
 import re
+import os
+import datetime
+from pathlib import Path
 
 
 class ViolinScraperPipeline:
@@ -55,4 +60,21 @@ class ImagespiderPipeline(ImagesPipeline):
 
 class ProxyPipeline:
     def process_item(self, item, spider):
-        pass
+        folder_path = r'./proxy_pool'
+        if isinstance(item, ProxyItem):
+            path = Path(folder_path)
+            if not path.is_dir():
+                path.mkdir(parents=True)
+
+            content = '{},{},{},{},{}'.format(item.ip, item.port, item.location, item.kind, str_to_datetime(item.verify_time))
+            f = File(spider.logger)
+            date_now = datetime.datetime.now()
+            full_path = path.joinpath('66ip_cn_{}{}{}{}{}.proxy'.format(date_now.year, date_now.month, date_now.day, date_now.hour, date_now.minute))
+            if full_path.is_file:
+                os.remove(str(full_path.resolve()))
+
+            f.open_file(str(full_path.resolve()), mode='a')
+            f.writeline(content, True)
+            f.close_file()
+
+        return item

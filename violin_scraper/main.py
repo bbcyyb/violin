@@ -11,7 +11,8 @@ def run():
     sys.path.append(path)
     spiders = []
     # spiders.append('slct')
-    spiders.append('example')
+    # spiders.append('example')
+    spiders.append('proxy')
 
     for spider_name in spiders:
         execute(['scrpy', 'crawl', spider_name, '-a', 'debug=1'])
