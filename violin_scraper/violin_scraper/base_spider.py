@@ -1,5 +1,4 @@
 import scrapy
-import logging
 
 
 class BaseSpider(scrapy.Spider):
@@ -14,10 +13,4 @@ class BaseSpider(scrapy.Spider):
         self.debug_mode = bool(debug)
         self.logger.info('Debug Mode is {}'.format(
             'Opened' if self.debug_mode else 'Closed'))
-
-        if self.debug_mode:
-            self.logger.setLevel(logging.DEBUG)
-            self.logger.debug(
-                "==========================================================")
-
         super().__init__(*args, **kwargs)

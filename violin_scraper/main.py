@@ -5,6 +5,9 @@ from violin_scraper.utils import running_path
 import sys
 import os
 
+DEBUG = 1
+os.environ['debug'] = str(DEBUG)
+
 
 def run():
     path = running_path()
@@ -15,7 +18,7 @@ def run():
     spiders.append('proxy')
 
     for spider_name in spiders:
-        execute(['scrpy', 'crawl', spider_name, '-a', 'debug=1'])
+        execute(['scrpy', 'crawl', spider_name, '-a', 'debug={}'.format(DEBUG)])
 
 
 def test_file():
@@ -27,6 +30,22 @@ def test_file():
     f.close_file()
 
 
+class Base:
+
+    settings = {}
+
+    @classmethod
+    def from_init(cls):
+        print("Hello, I'm Base")
+
+
+class Child(Base):
+    @classmethod
+    def from_init(cls):
+        print("Hello, I'm Child")
+
+
 if __name__ == "__main__":
     run()
     # test_file()
+    # Child.from_init()

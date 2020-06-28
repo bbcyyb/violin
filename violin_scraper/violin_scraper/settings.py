@@ -12,6 +12,10 @@
 import os
 import datetime
 
+#=======================================================================
+# Environment Variable
+#=======================================================================
+debug = int(os.environ['debug'] or '0')
 
 BOT_NAME = 'violin_scraper'
 
@@ -22,15 +26,15 @@ NEWSPIDER_MODULE = 'violin_scraper.spiders'
 # Logging
 #=======================================================================
 to_day = datetime.datetime.now()
-log_file_path = 'logs/scrapy_{}_{}_{}.log'.format(to_day.year, to_day.month, to_day.day)
-
+log_file_path = 'logs/scrapy_{}_{}_{}.log'.format(to_day.year, to_day.month,
+                                                  to_day.day)
 LOG_ENABLED = True
 LOG_ENCODING = 'utf-8'
-LOG_FILE = log_file_path
+LOG_FILE = log_file_path if debug == 0 else None
 LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
 LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
 # CRITICAL, ERROR, WARNING, INFO, DEBUG
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO' if debug == 0 else 'DEBUG'
 # If True, all standard output (and error) of your process will be redirected to the log. For example if you print('hello') it will appear in the Scrapy log.
 LOG_STDOUT = False
 # If True, the logs will just contain the root path. If it is set to False then it displays the component responsible for the log output
@@ -74,11 +78,10 @@ DOWNLOAD_DELAY = 1
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-#    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
+    #    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
     'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
     'violin_scraper.middlewares.ProxyMiddleware': 543,
     'violin_scraper.middlewares.UAMiddleware': 544,
-
 
     # Decommissioned Middleware
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
@@ -94,7 +97,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-#    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
+    #    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
     'violin_scraper.pipelines.ImagespiderPipeline': 300,
 }
 
@@ -119,16 +122,14 @@ HTTPCACHE_ENABLED = True
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-
-
 #=======================================================================
 # Customize
 #=======================================================================
 
-IMAGES_STORE=os.path.join(os.path.dirname(os.path.dirname(__file__)),'images')
+IMAGES_STORE = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                            'images')
 
-
-PROXIES = [ ]
+PROXIES = ['http://baidu.com:9998']
 
 USER_AGENT_LIST = [
     # Chrome

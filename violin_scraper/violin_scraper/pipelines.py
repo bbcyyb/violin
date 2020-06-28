@@ -66,12 +66,12 @@ class ProxyPipeline:
             if not path.is_dir():
                 path.mkdir(parents=True)
 
-            content = '{},{},{},{},{}'.format(item.ip, item.port, item.location, item.kind, str_to_datetime(item.verify_time))
+            content = '{},{},{},{},{}'.format(item['ip'], item['port'], item['location'], item['kind'], item['last_verify_time'])
             f = File(spider.logger)
             date_now = datetime.datetime.now()
             full_path = path.joinpath('66ip_cn_{}{}{}{}{}.proxy'.format(date_now.year, date_now.month, date_now.day, date_now.hour, date_now.minute))
-            if full_path.is_file:
-                os.remove(str(full_path.resolve()))
+            # if full_path.is_file():
+                # os.remove(str(full_path.resolve()))
 
             f.open_file(str(full_path.resolve()), mode='a')
             f.writeline(content, True)

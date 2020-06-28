@@ -135,4 +135,6 @@ dmypy.json
 *.swp
 
 #==================================================
-/images
+images/
+logs/
+proxy_pool/
