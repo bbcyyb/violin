@@ -1,8 +1,10 @@
 DONE - Extract URL with the different kind of http status and store into separate files.
-- Add a spider to collect or update free proxies information 
+DONE - Add a spider to collect or update free proxies information 
+- Make proxy middleware be avaiable
 - Rewite retry middleware
 - Store proxies within database or redis.
 - Call baiduyun API to upload or download files.
+- Allow capture login page.
 DONE - Development mode
 - Containerization
 - Distributed
