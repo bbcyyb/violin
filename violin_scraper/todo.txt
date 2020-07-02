@@ -2,6 +2,7 @@ DONE - Extract URL with the different kind of http status and store into separat
 DONE - Add a spider to collect or update free proxies information 
 - Make proxy middleware be avaiable
 - Rewite retry middleware
+- Prepare a seperate folder for build, include dockerfile, k8sfile etc.
 - Store proxies within database or redis.
 - Call baiduyun API to upload or download files.
 - Allow capture login page.
@@ -9,6 +10,7 @@ DONE - Development mode
 - Containerization
 - Distributed
 - K8S
+- Jenkins
 
 * 鬼刀
 https://wall.alphacoders.com/by_sub_category.php?id=240262&name=GhostBlade+Wallpapers
