@@ -2,8 +2,12 @@ from scrapy.cmdline import execute
 from violin_scraper.utils import File
 from violin_scraper.utils import running_path
 
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 import sys
 import os
+import time
 
 DEBUG = 1
 os.environ['debug'] = str(DEBUG)
@@ -29,6 +33,24 @@ def test_file():
     f.writeline('hahahaha', True)
     f.close_file()
 
+def test_headless_chrome():
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable_gpu')
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.minimize_window()
+
+    print(1)
+    driver.get('https://www.baidu.com/')
+    print(2)
+    time.sleep(3)
+    print(3)
+    # driver.find_element_by_id("kw").send_keys('chrome')
+    driver.get_screenshot_as_file('./a.png')
+    print(4)
+    driver.quit()
+    print(5)
+
 
 class Base:
 
@@ -46,6 +68,7 @@ class Child(Base):
 
 
 if __name__ == "__main__":
-    run()
+    # run()
     # test_file()
     # Child.from_init()
+    test_headless_chrome()
