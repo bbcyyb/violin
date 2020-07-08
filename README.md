@@ -42,7 +42,33 @@ scrapy startproject violin_scraper
 
 2. 查看自己chrome浏览器版本
 
-3. 将下载下来的文件解压，把chromedriver.exe放在chrome安装目录下，例如： `C:\Program Files (x86)\Google\Chrome\Application`
+3. 将下载下来的文件解压，把chromedriver放在chrome安装目录下
+
+- Windows
+
+`C:\Program Files (x86)\Google\Chrome\Application`
+
+- Ubantu
+
+i. Check if google-chrome has been installed
+
+```shell
+which google-chrome
+```
+
+ii. Check if ChromeDriver has been installed
+
+```shell
+which ChromeDriver
+```
+
+iii. Copy unziped chromeDriver file to `/usr/bin folder`
+
+iv. Verify if ChromeDriver works
+
+```shell
+chromedriver
+```
 
 4. 配置环境变量，加入到PATH中。
 
