@@ -96,14 +96,18 @@ $ docker pull redis:6.0.5
 ```bat
 md \mydata\redis\data
 md \mydata\redis\conf
+md \mydata\redis\log
 echo 2> \mydata\redis\conf\redis.conf
 ```
+
+> 被映射到windows系统中的log文件，无法识别\r, 所以无法换行
 
 #### Linux
 
 ```shell
 $ mkdir -p /mydata/redis/data
 $ mkdir -p /mydata/redis/conf
+$ mkdir -p /mydata/redis/log
 $ touch /mydata/redis/conf/redis.conf
 ```
 
@@ -117,6 +121,7 @@ docker run ^
 -p 6379:6379 ^
 -v /c/mydata/redis/data:/data:rw ^
 -v /c/mydata/redis/conf/redis.conf:/etc/redis/redis.conf:rw ^
+-v /c/mydata/redis/log:/redislog:rw ^
 --privileged=true ^
 -d redis:6.0.5 redis-server /etc/redis/redis.conf --requirepass mypass 
 ```
@@ -129,6 +134,7 @@ $ docker run \
 -p 6379:6379 \ # 端口映射 宿主机:容器
 -v /mydata/redis/data:/data:rw \ # 映射数据目录 rw为读写
 -v /mydata/redis/conf/redis.conf:/etc/redis/redis.conf:rw \ # 挂载配置文件
+-v /mydata/redis/log:/redislog:rw \
 --privileged=true \ # 赋予容器内root权限
 --requirepass mypass \ # 设置默认密码
 -d redis:6.0.5 redis-server /etc/redis/redis.conf # deamon启动，服务使用指定的配置文件

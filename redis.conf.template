@@ -1,5 +1,5 @@
 # Redis默认不是以守护进程的方式运行，可以通过该配置项修改，使用yes启用守护进程
-deamonize  no
+daemonize  no
 
 
 # 设置Redis连接密码，如果配置了连接密码，客户端在连接Redis时需要通过
@@ -25,11 +25,11 @@ tcp-keepalive 0
 ##verbose输出一些相对有用的信息,目前效果不明
 ##notice适合生产环境
 ##warning异常信息
-loglevel notice
+loglevel verbose
 
-##指定redis日志文件目录,默认为stdout
-##logfile ~/redislog.log
-logfile stdout
+##日志记录方式，默认为标准输出，如果配置为redis为守护进程方式运行，而这里又配置为标准输出，则日志将会发送给/dev/null
+logfile /redislog/redislog.log
+##logfile stdout
 
 ##设定redis所允许的最大"db簇"的个数,默认为16个簇.
 ##客户端可以通过"select"指令指定需要使用的"db簇"索引号,默认为0.
