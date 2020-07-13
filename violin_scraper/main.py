@@ -1,6 +1,6 @@
 from scrapy.cmdline import execute
-from violin_scraper.utils import File
-from violin_scraper.utils import running_path
+from utility.common import File, running_path
+from utility.di import service, get_ctx 
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -33,6 +33,7 @@ def test_file():
     f.writeline('hahahaha', True)
     f.close_file()
 
+
 def test_headless_chrome():
     chrome_options = Options()
     chrome_options.add_argument('--headless')
@@ -51,24 +52,42 @@ def test_headless_chrome():
     driver.quit()
     print(5)
 
-
-class Base:
-
-    settings = {}
-
-    @classmethod
-    def from_init(cls):
-        print("Hello, I'm Base")
+# ================ DI Test ================== #
 
 
-class Child(Base):
-    @classmethod
-    def from_init(cls):
-        print("Hello, I'm Child")
+@service
+class TestService(object):
+    def __init__(self, context):
+        self.num = 0
 
+    def add(self, num):
+        self.num += num
+        print('current num is {}'.format(self.num))
+
+
+def test_di_1():
+    ctx = get_ctx()
+    if isinstance(TestService.get(ctx), TestService):
+        print("It's a instance of TestService")
+    else:
+        print("It isn't a instance of TestService")
+
+    test = TestService.get(ctx)
+    test.add(1)
+
+
+def test_di_2():
+    ctx = get_ctx()
+    test = TestService.get(ctx)
+    test.add(1)
+
+
+# =========================================== #
 
 if __name__ == "__main__":
     # run()
     # test_file()
     # Child.from_init()
-    test_headless_chrome()
+    #test_headless_chrome()
+    test_di_1()
+    test_di_2()

@@ -1,7 +1,7 @@
 import scrapy
 from violin_scraper.base_spider import BaseSpider
 from violin_scraper.items import SlctItem
-from violin_scraper.utils import running_path
+from utility.common import running_path
 
 import os
 
