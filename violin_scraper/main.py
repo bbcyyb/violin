@@ -1,5 +1,6 @@
 from scrapy.cmdline import execute
-from utility.common import File, running_path
+from utility.common import running_path
+from utility.file import File
 from utility.di import service, get_ctx 
 
 from selenium import webdriver

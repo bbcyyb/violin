@@ -9,7 +9,7 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 from scrapy.http import Request
 from violin_scraper.items import ProxyItem
-from utility.common import File
+from utility.file import File
 import re
 import datetime
 from pathlib import Path

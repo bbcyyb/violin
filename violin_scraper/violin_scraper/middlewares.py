@@ -14,7 +14,8 @@ from twisted.web.client import ResponseFailed
 from scrapy.http import HtmlResponse
 from scrapy.core.downloader.handlers.http11 import TunnelError
 
-from utility.common import (File, running_path)
+from utility.common import running_path
+from utility.file import File
 
 import os
 import datetime
