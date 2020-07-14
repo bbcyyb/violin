@@ -1,7 +1,7 @@
 DONE - Extract URL with the different kind of http status and store into separate files.
 DONE - Add a spider to collect or update free proxies information 
-- IOC
-- Redis encapsulation
+DONE - IOC
+- Redis wrapper 
 - Make proxy middleware be avaiable
 - Rewite retry middleware
 - Prepare a seperate folder for build, include dockerfile, k8sfile etc.

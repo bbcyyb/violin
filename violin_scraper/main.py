@@ -1,6 +1,7 @@
 from scrapy.cmdline import execute
 from utility.common import running_path
 from utility.file import File
+from utility.redis import Redis
 from utility.di import service, get_ctx 
 
 from selenium import webdriver
@@ -83,6 +84,24 @@ def test_di_2():
     test.add(1)
 
 
+def test_redis():
+    ctx = get_ctx()
+    r = Redis.get(ctx)
+    if not r.is_connected():
+        r.connect(password='mypass')
+    r.set_str('abc', 'Kevin.Yu')
+    r.set_str('zzz', 'This is a example.')
+
+
+def test_redis_2():
+    ctx = get_ctx()
+    r = Redis.get(ctx)
+    if not r.is_connected():
+        r.connect(password='mypass')
+    print(r.get_str('abc'))
+    print(r.get_str('zzz'))
+
+
 # =========================================== #
 
 if __name__ == "__main__":
@@ -90,5 +109,7 @@ if __name__ == "__main__":
     # test_file()
     # Child.from_init()
     #test_headless_chrome()
-    test_di_1()
-    test_di_2()
+    # test_di_1()
+    # test_di_2()
+    test_redis()
+    test_redis_2()
