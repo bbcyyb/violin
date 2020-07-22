@@ -1,5 +1,4 @@
 from scrapy import shell
-from enum import Enum
 
 import os
 import datetime

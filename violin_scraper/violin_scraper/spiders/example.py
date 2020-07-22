@@ -9,9 +9,7 @@ class ExampleSpider(BaseSpider):
     custom_settings = {
         'LOG_FILE': None,
         'DOWNLOADER_MIDDLEWARES': {
-            'violin_scraper.middlewares.StartingDownloadMiddleware': 99,
-            'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
-            'violin_scraper.middlewares.EndingDownloadMiddleware': 899,
+            'violin_scraper.middlewares.exception_downloader.ExceptionMiddlware': 120,
         },
         'ITEM_PIPELINES': {},
     }

@@ -16,9 +16,9 @@ class SlctSpider(BaseSpider):
 
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES': {
-            'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
-            'violin_scraper.middlewares.ProxyMiddleware': 543,
-            'violin_scraper.middlewares.UAMiddleware': 544,
+            'violin_scraper.middlewares.exception_downloader.ExceptionMiddlware': 120,
+            'violin_scraper.middlewares.proxy_downloader.ProxyMiddleware': 543,
+            'violin_scraper.middlewares.ua_downloader.UAMiddleware': 544,
         },
         'ITEM_PIPELINES': {
             'violin_scraper.pipelines.ImagespiderPipeline': 300,
