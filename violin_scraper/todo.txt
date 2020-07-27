@@ -2,7 +2,7 @@ DONE - Extract URL with the different kind of http status and store into separat
 DONE - Add a spider to collect or update free proxies information 
 DONE - IOC
 DONE - Redis wrapper 
-- Move all middleware files into a Separate middlewares folder
+DONE - Move all middleware files into a Separate middlewares folder
 - Rewite retry middleware
 - Make proxy middleware be avaiable
 - Prepare a seperate folder for build, include dockerfile, k8sfile etc.

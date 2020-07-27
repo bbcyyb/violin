@@ -11,7 +11,9 @@ class ExampleSpider(BaseSpider):
         'DOWNLOADER_MIDDLEWARES': {
             'violin_scraper.middlewares.exception_downloader.ExceptionMiddlware': 120,
         },
-        'ITEM_PIPELINES': {},
+        'ITEM_PIPELINES': {
+            'violin_scraper.retinues.example.pipelines.Pipeline': 543,
+        },
     }
 
     def parse(self, response):

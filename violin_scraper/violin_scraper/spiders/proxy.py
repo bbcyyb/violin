@@ -1,6 +1,6 @@
 import scrapy
 from violin_scraper.base_spider import BaseSpider
-from violin_scraper.items import ProxyItem
+from violin_scraper.retinues.proxy.items import ProxyItem
 
 import re
 import datetime
@@ -15,12 +15,12 @@ class ProxySpider(BaseSpider):
 
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES': {
-            'violin_scraper.middlewares.exception_downloader.ExceptionMiddlware': 120,
+            'violin_scraper.middlewares.exception_downloader.ExceptionMiddleware': 120,
             'violin_scraper.middlewares.proxy_downloader.ProxyMiddleware': 543,
-            'violin_scraper.middlewaresua_downloader.UAMiddleware': 544,
+            'violin_scraper.middlewares.ua_downloader.UAMiddleware': 544,
         },
         'ITEM_PIPELINES': {
-            'violin_scraper.pipelines.ProxyPipeline': 543,
+            'violin_scraper.retinues.proxy.pipelines.Pipeline': 543,
         },
         'IMAGES_STORE': None,
     }
@@ -28,10 +28,8 @@ class ProxySpider(BaseSpider):
     def parse(self, response):
         # area page
         atags = response.xpath('/html/body/div[3]/table/tr/td/ul/li/a')[1:]
-        # if self.debug_mode:
-            # atags = atags[0:1]
 
-        from violin_scraper.utils import inspect
+        from utility.common import inspect
         inspect(response, self)
 
         for atag in atags:

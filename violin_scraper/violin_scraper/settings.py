@@ -116,7 +116,7 @@ AUTOTHROTTLE_MAX_DELAY = 60
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 # HTTPCACHE_EXPIRATION_SECS = 0
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
@@ -129,7 +129,7 @@ HTTPCACHE_ENABLED = True
 IMAGES_STORE = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                             'images')
 
-PROXIES = ['http://baidu.com:9998']
+PROXIES = [ ]
 
 USER_AGENT_LIST = [
     # Chrome

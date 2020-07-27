@@ -4,14 +4,14 @@ from twisted.internet.error import TimeoutError, DNSLookupError, \
     ConnectionLost, TCPTimedOutError
 from twisted.web.client import ResponseFailed
 from scrapy.http import HtmlResponse
-from scrapy.core.downloader.handlers.http import TunnelError
+from scrapy.core.downloader.handlers.http11 import TunnelError
 from utility.common import running_path
 from utility.file import File
 import os
 import datetime
 
 
-class Exception:
+class ExceptionMiddleware:
     ALL_EXCEPTIONS = (
                         defer.TimeoutError, TimeoutError, DNSLookupError,
                         ConnectionRefusedError, ConnectionDone, ConnectError,
