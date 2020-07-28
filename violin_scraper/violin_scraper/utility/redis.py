@@ -1,5 +1,5 @@
 import redis as _redis
-from utility.di import service
+from violin_scraper.utility.di import service
 
 import logging
 

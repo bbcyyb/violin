@@ -39,5 +39,12 @@ https://segmentfault.com/a/1190000017785241?utm_source=tag-newest
 代理池方案，
 1. 定时读取免费代理网站，例如66ip.cn，获取ip, port, location, type, last verified time。
 2. 获取验证时间不超过3天的IP，并去重。
-3.IP+端口+代理位置+代理类型决定一条具体的proxy
-4.每个地区代理抓取前3页即可，里面有大量重复内容，需要算法去重。
+3. IP+端口+代理位置+代理类型决定一条具体的proxy
+4. 每个地区代理抓取前3页即可，里面有大量重复内容，需要算法去重。
+
+Cookie池方案，
+1. 建一个单独的小程序，调用Selenium来模拟用户登录，例如京东，其中可能需要包含ORC模块
+2. 获取到的cookie信息，存入到redis中，根据cookie中的过期时间设置redis过期时间。
+3. 创建一个LoginMiddleware, 根据spider name获取当前使用得最少（或其他策略）的cookie，装载。如果没有查到可用cooike，则不用装载
+4. 在LoginMiddleware的process_response中，如果当前有使用cookie且成功，成功次数+1，否则失败次数+1
+

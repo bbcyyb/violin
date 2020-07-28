@@ -4,17 +4,34 @@ from violin_scraper.base_spider import BaseSpider
 
 class ExampleSpider(BaseSpider):
     name = 'example'
-    start_urls = ['http://lab.scrapyd.cn/']
+    """
+    start_urls = ['http://exercise.kingname.info/exercise_xpath_1.html',
+                  'http://exercise.kingname.info/exercise_xpath_2.html']
+    """
+
+    def start_requests(self):
+        urls = ['http://exercise.kingname.info/exercise_xpath_1.html',
+                'http://exercise.kingname.info/exercise_xpath_2.html']
+
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse_xpath)
 
     custom_settings = {
         'LOG_FILE': None,
         'DOWNLOADER_MIDDLEWARES': {
-            'violin_scraper.middlewares.exception_downloader.ExceptionMiddlware': 120,
+            'violin_scraper.middlewares.exception_downloader.ExceptionMiddleware': 120,
         },
         'ITEM_PIPELINES': {
             'violin_scraper.retinues.example.pipelines.Pipeline': 543,
         },
     }
+
+    def parse_xpath(self, response):
+        for ul in response.xpath('/html/body/ul'):
+            yield {
+                'key': ul.xpath('li[@class="name"]/text()').extract_first(),
+                'value': ul.xpath('li[@class="price"]/text()').extract_first(),
+            }
 
     def parse(self, response):
         for quote in response.css('div.quote'):

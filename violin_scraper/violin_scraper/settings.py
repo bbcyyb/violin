@@ -15,7 +15,7 @@ import datetime
 # =======================================================================
 # Environment Variable
 # =======================================================================
-debug = int(os.environ['debug'] or '0')
+debug = int(os.environ.get('debug') or '0')
 
 BOT_NAME = 'violin_scraper'
 
@@ -79,13 +79,6 @@ DOWNLOAD_DELAY = 1
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     #    'violin_scraper.middlewares.ViolinScraperDownloaderMiddleware': 543,
-    'violin_scraper.middlewares.ProcessAllExceptionMiddlware': 120,
-    'violin_scraper.middlewares.ProxyMiddleware': 543,
-    'violin_scraper.middlewares.UAMiddleware': 544,
-
-    # Decommissioned Middleware
-    'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
-    'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
 }
 
 # Enable or disable extensions
@@ -98,7 +91,6 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     #    'violin_scraper.pipelines.ViolinScraperPipeline': 300,
-    'violin_scraper.pipelines.ImagespiderPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
