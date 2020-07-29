@@ -1,3 +1,6 @@
+from violin_scraper.utility.redis import Redis
+from violin_scraper.utility.di import service, get_ctx
+
 import time
 import json
 import redis
@@ -39,6 +42,12 @@ def proform():
     driver.quit()
     print(5)
 
+def write_to_redis(cookies):
+    ctx = get_ctx()
+    r = Redis.get(ctx)
+    if not r.is_connected():
+        r.connect(password='mypass')
+    r.set_hash("cookie", "example", cookies)
 
 if __name__ == "__main__":
     proform()

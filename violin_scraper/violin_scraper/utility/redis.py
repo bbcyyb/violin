@@ -50,6 +50,13 @@ class Redis():
         self._rs.hset(name, key, value)
 
     def getall_hash(self, name):
+        """
+        This function is not the best solution to get all hashs
+        If you want to get all hash, please consider below code:
+        result = conn.hscan_iter('k4', count=100)
+        for item in result:
+            print(item)
+        """
         res = self._rs.hgetall(name)
         data = {}
         if res:
