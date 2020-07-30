@@ -97,6 +97,7 @@ def test_redis_2():
     ctx = get_ctx()
     r = Redis.get(ctx)
     if not r.is_connected():
+        print(2)
         r.connect(password='mypass')
     print(r.get_str('abc'))
     print(r.get_str('zzz'))
@@ -105,11 +106,11 @@ def test_redis_2():
 # =========================================== #
 
 if __name__ == "__main__":
-    run()
+    # run()
     # test_file()
     # Child.from_init()
     # test_headless_chrome()
     # test_di_1()
     # test_di_2()
-    # test_redis()
-    # test_redis_2()
+    test_redis()
+    test_redis_2()

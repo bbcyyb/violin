@@ -1,5 +1,6 @@
 import redis as _redis
 from violin_scraper.utility.di import service
+from violin_scraper.utility.redlock import Redlock
 
 import logging
 
@@ -12,25 +13,28 @@ class Redis():
         self._rs = None
         self._pool = None
         self._is_connected = False
+        self._redlock = None
 
     def connect(self, host='127.0.0.1', port=6379, password=''):
         try:
-            self.pool = _redis.ConnectionPool(host=host,
+            self._pool = _redis.ConnectionPool(host=host,
                                               port=port,
                                               password=password)
-            self._rs = _redis.Redis(connection_pool=self.pool)
+            self._rs = _redis.StrictRedis(connection_pool=self._pool)
             self._is_connected = True
+            self._redlock = Redlock([self._rs])
+            # self._redlock = Redlock([{"host": host, "port": port, "password": password}])
         except Exception as e:
             _log.error('Redis connect failed, error info: {}'.format(e))
-            self.is_connected = False
+            self._is_connected = False
 
     def is_connected(self):
         return self._is_connected
 
     def disconnect(self):
         if self.is_connected():
-            self.pool.disconnect(False)
-            self.is_connected = False
+            self._pool.disconnect(False)
+            self._is_connected = False
 
     def get_str(self, name):
         # poor performance
@@ -39,7 +43,13 @@ class Redis():
             return str(res)
 
     def set_str(self, name, value, time=None):
-        self._rs.set(name, value, time)
+        # TODO: Function Decorators is required here
+        mylock = self._redlock.lock(name, 1000)
+        if mylock:
+            try:
+                self._rs.set(name, value, time)
+            finally:
+                self._redlock.unlock(mylock)
 
     def get_hash(self, name, key):
         res = self._rs.hget(name, key)

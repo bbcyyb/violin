@@ -38,9 +38,11 @@ def proform():
     cookies = driver.get_cookies()
     print(cookies)
     # TODO: 将cookies完整写入redis中，将spider name作为key
+    write_to_redis(cookies)
     print(4)
     driver.quit()
     print(5)
+
 
 def write_to_redis(cookies):
     ctx = get_ctx()
