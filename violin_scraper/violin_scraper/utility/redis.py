@@ -17,13 +17,11 @@ class Redis():
 
     def connect(self, host='127.0.0.1', port=6379, password=''):
         try:
-            self._pool = _redis.ConnectionPool(host=host,
-                                              port=port,
-                                              password=password)
+            self._pool = _redis.ConnectionPool(host=host, port=port, password=password, decode_responses=True)
+
             self._rs = _redis.StrictRedis(connection_pool=self._pool)
             self._is_connected = True
             self._redlock = Redlock([self._rs])
-            # self._redlock = Redlock([{"host": host, "port": port, "password": password}])
         except Exception as e:
             _log.error('Redis connect failed, error info: {}'.format(e))
             self._is_connected = False
@@ -43,7 +41,6 @@ class Redis():
             return str(res)
 
     def set_str(self, name, value, time=None):
-        # TODO: Function Decorators is required here
         mylock = self._redlock.lock(name, 1000)
         if mylock:
             try:
@@ -57,7 +54,12 @@ class Redis():
             return str(res)
 
     def set_hash(self, name, key, value):
-        self._rs.hset(name, key, value)
+        mylock = self._redlock.lock(name, 1000)
+        if mylock:
+            try:
+                self._rs.hset(name, key, value)
+            finally:
+                self._redlock.unlock(mylock)
 
     def getall_hash(self, name):
         """
@@ -79,17 +81,27 @@ class Redis():
             keys = self._rs.hkeys(name)
         return keys
 
-    def delete(self, key):
-        if self._rs.exists(key):
-            self._rs.delete(key)
-            return 1
-        return 0
+    def delete(self, name):
+        mylock = self._redlock.lock(name, 1000)
+        if mylock:
+            try:
+                if self._rs.exists(name):
+                    self._rs.delete(name)
+                    return 1
+                return 0
+            finally:
+                self._redlock.unlock(mylock)
 
     def delete_hashkey(self, name, key):
-        if self._rs.hexists(name, key):
-            self._rs.hdel(name, key)
-            return 1
-        return 0
+        mylock = self._redlock.lock(name, 1000)
+        if mylock:
+            try:
+                if self._rs.hexists(name, key):
+                    self._rs.hdel(name, key)
+                    return 1
+                return 0
+            finally:
+                self._redlock.unlock(mylock)
 
     def clean_alldb(self):
         self._rs.flushall()

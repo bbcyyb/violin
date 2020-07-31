@@ -120,9 +120,6 @@ class Redlock(object):
             del redis_errors[:]
             for server in self.servers:
                 try:
-                    print(resource)
-                    print(val)
-                    print(ttl)
                     if self.lock_instance(server, resource, val, ttl):
                         n += 1
                 except RedisError as e:
@@ -152,3 +149,4 @@ class Redlock(object):
                 redis_errors.append(e)
         if redis_errors:
             raise MultipleRedlockException(redis_errors)
+

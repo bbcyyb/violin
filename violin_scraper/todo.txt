@@ -4,6 +4,7 @@ DONE - IOC
 DONE - Redis wrapper 
 DONE - Development mode
 DONE - Move all middleware files into a Separate middlewares folder
+InProgress - Enable unit test
 InProgress - Allow capture login page.
 TODO - Implement OCR through the third part component
 - Store proxies within redis.
