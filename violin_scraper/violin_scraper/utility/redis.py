@@ -16,6 +16,10 @@ class Redis():
         self._redlock = None
 
     def connect(self, host='127.0.0.1', port=6379, password=''):
+        """
+        Use Redis connection pool. Don't need to explicitly close it.
+        There isn't a avaiable method to disconnect whole connection pool.
+        """
         try:
             self._pool = _redis.ConnectionPool(host=host, port=port, password=password, decode_responses=True)
 
@@ -28,11 +32,6 @@ class Redis():
 
     def is_connected(self):
         return self._is_connected
-
-    def disconnect(self):
-        if self.is_connected():
-            self._pool.disconnect(False)
-            self._is_connected = False
 
     def get_str(self, name):
         # poor performance
