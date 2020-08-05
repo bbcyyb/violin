@@ -4,6 +4,7 @@ cffi==1.14.0
 constantly==15.1.0
 cryptography==2.9.2
 cssselect==1.1.0
+ddt==1.4.1
 flake8==3.8.3
 hyperlink==19.0.0
 idna==2.9

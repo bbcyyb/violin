@@ -117,18 +117,24 @@ class Redlock(object):
         while retry < self.retry_count:
             n = 0
             start_time = int(time.time() * 1000)
+            print(11111111111)
             del redis_errors[:]
             for server in self.servers:
                 try:
+                    print(22222222222)
                     if self.lock_instance(server, resource, val, ttl):
+                        print(333333333333333)
                         n += 1
                 except RedisError as e:
+                    print(444444444444444)
                     redis_errors.append(e)
             elapsed_time = int(time.time() * 1000) - start_time
+            print(55555555555555)
             validity = int(ttl - elapsed_time - drift)
             if validity > 0 and n >= self.quorum:
                 if redis_errors:
                     raise MultipleRedlockException(redis_errors)
+                print(6666666666666666)
                 return Lock(validity, resource, val)
             else:
                 for server in self.servers:
