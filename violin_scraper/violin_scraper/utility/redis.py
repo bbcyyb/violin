@@ -40,7 +40,7 @@ class Redis():
             return str(res)
 
     def set_str(self, name, value, time=None):
-        mylock = self._redlock.lock(name, 1000)
+        mylock = self._redlock.lock(name, 10)
         if mylock:
             try:
                 self._rs.set(name, value, time)
@@ -53,7 +53,7 @@ class Redis():
             return str(res)
 
     def set_hash(self, name, key, value):
-        mylock = self._redlock.lock(name, 1000)
+        mylock = self._redlock.lock(name, 10)
         if mylock:
             try:
                 self._rs.hset(name, key, value)

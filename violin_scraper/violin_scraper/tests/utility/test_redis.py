@@ -8,20 +8,23 @@ HOST = '127.0.0.1'
 PORT = 6379
 PASS = 'mypass'
 
-test_data = [{
+test_str_data = [{
     'str_1': 'abcdefg',
     'str_2': '123',
     'str_3':
     '{"title": "str3", "num_list": [ 4,5,2,10,7,6 ], "str_list": [ "aaa", "bbb", "ccc" ]}'
 }]
 
+test_hash_data = [{
+    'hash_1': {'key': 'name_1', 'value': '{"cookies": "123456789_hash1", "ttl: 1234567890}'},
+    'hash_2': {'key': 'name_2', 'value': '{"cookies": "123456789_hash2", "ttl: 1234567890}'},
+    'hash_3': {'key': 'name_3', 'value': '{"cookies": "123456789_hash3", "ttl: 1234567890}'},
+    'hash_4': {'key': 'name_1', 'value': '{"cookies": "123456789_hash4", "ttl: 1234567890}'},
+}]
+
 
 @ddt.ddt
 class TestRedis(unittest.TestCase):
-
-    def test_upper(self):
-        self.str_entities = {
-        }
 
     def setUp(self):
         self.r = Redis(None)
@@ -32,7 +35,7 @@ class TestRedis(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @ddt.data(*test_data)
+    @ddt.data(*test_str_data)
     def test_str(self, data):
         for k, v in data.items():
             self.r.set_str(k, v)
@@ -41,7 +44,7 @@ class TestRedis(unittest.TestCase):
             value = self.r.get_str(k)
             self.assertEqual(value, v)
 
-    @ddt.data(*test_data)
+    @ddt.data(*test_str_data)
     def test_content_update(self, data):
         name = 'str_3'
         j = data[name]
@@ -69,3 +72,7 @@ class TestRedis(unittest.TestCase):
         d_value_2 = json.loads(j_value_2)
         num_list_2 = d_value_2['num_list']
         self.assertEqual(len(num_list_2), 7)
+
+    @ddt.data(*test_hash_data)
+    def test_hash(self, data):
+        pass
