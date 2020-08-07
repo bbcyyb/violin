@@ -1,8 +1,9 @@
 from violin_scraper.utility.redis import Redis
+from violin_scraper.utility import common
 import unittest
 import ddt
 import json
-import time
+import datetime
 
 HOST = '127.0.0.1'
 PORT = 6379
@@ -15,12 +16,12 @@ test_str_data = [{
     '{"title": "str3", "num_list": [ 4,5,2,10,7,6 ], "str_list": [ "aaa", "bbb", "ccc" ]}'
 }]
 
-test_hash_data = [{
-    'hash_1': {'key': 'name_1', 'value': '{"cookies": "123456789_hash1", "ttl: 1234567890}'},
-    'hash_2': {'key': 'name_2', 'value': '{"cookies": "123456789_hash2", "ttl: 1234567890}'},
-    'hash_3': {'key': 'name_3', 'value': '{"cookies": "123456789_hash3", "ttl: 1234567890}'},
-    'hash_4': {'key': 'name_1', 'value': '{"cookies": "123456789_hash4", "ttl: 1234567890}'},
-}]
+test_hash_data = [[
+    {'key': 'name_1', 'value': '{"cookies": "123456789_hash1", "ttl: \{ttl\}}', 'ttl_offset': 6},
+    {'key': 'name_2', 'value': '{"cookies": "123456789_hash2", "ttl: \{ttl\}}', 'ttl_offset': 8},
+    {'key': 'name_3', 'value': '{"cookies": "123456789_hash3", "ttl: \{ttl\}}', 'ttl_offset': 9},
+    {'key': 'name_1', 'value': '{"cookies": "123456789_hash4", "ttl: \{ttl\}}', 'ttl_offset': 4},
+]]
 
 
 @ddt.ddt
@@ -75,4 +76,15 @@ class TestRedis(unittest.TestCase):
 
     @ddt.data(*test_hash_data)
     def test_hash(self, data):
+        cur_datetime = datetime.datetime.now().replace(microsecond=0)
+        for d in data:
+            key = d['key']
+            j_value = d['value']
+            ttl_offset = d['ttl_offset']
+
+            ttl_date = cur_datetime + datetime.timedelta(seconds=ttl_offset)
+            ttl_ts = common.datetime_to_timestamp(ttl_date)
+            j_value = j_value.replace('\{ttl\}', ttl_ts)
+            d_value = json.loads(j_value)
+            print(d_value)
         pass
