@@ -56,9 +56,13 @@ class Redis():
         mylock = self._redlock.lock(name, 10)
         if mylock:
             try:
+                print(333)
                 self._rs.hset(name, key, value)
+                print(444)
             finally:
+                print(555)
                 self._redlock.unlock(mylock)
+                print(666)
 
     def getall_hash(self, name):
         """
@@ -81,7 +85,7 @@ class Redis():
         return keys
 
     def delete(self, name):
-        mylock = self._redlock.lock(name, 1000)
+        mylock = self._redlock.lock(name)
         if mylock:
             try:
                 if self._rs.exists(name):
@@ -92,7 +96,7 @@ class Redis():
                 self._redlock.unlock(mylock)
 
     def delete_hashkey(self, name, key):
-        mylock = self._redlock.lock(name, 1000)
+        mylock = self._redlock.lock(name)
         if mylock:
             try:
                 if self._rs.hexists(name, key):
