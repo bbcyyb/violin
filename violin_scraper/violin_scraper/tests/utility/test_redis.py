@@ -91,9 +91,7 @@ class TestRedis(unittest.TestCase):
             ttl_ts = common.datetime_to_timestamp(ttl_date)
             j_value = j_value.replace('\{ttl\}', str(ttl_ts))
             # d_value = json.loads(j_value)
-            print(11)
             self.r.set_hash(name, key, j_value)
-            print(22)
 
         # d_value_arrays = self.r.getall_hash(name)
         # self.assertEqual(len(d_value_arrays), 4)

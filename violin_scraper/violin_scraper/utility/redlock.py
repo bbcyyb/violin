@@ -95,8 +95,9 @@ class Redlock(object):
 
     def unlock_instance(self, server, resource, val):
         try:
-            server.eval(self.unlock_script, 1, resource, val)
-        except Exception:
+            server.eval(self.unlock_script, 1, resource + '_lock', val)
+        except Exception as err:
+            print(err)
             logging.exception("Error unlocking resource %s in server %s", resource, str(server))
 
     def get_unique_id(self):

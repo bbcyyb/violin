@@ -56,13 +56,9 @@ class Redis():
         mylock = self._redlock.lock(name, 10)
         if mylock:
             try:
-                print(333)
                 self._rs.hset(name, key, value)
-                print(444)
             finally:
-                print(555)
                 self._redlock.unlock(mylock)
-                print(666)
 
     def getall_hash(self, name):
         """
