@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../../..')
 from violin_scraper.utility.redis import Redis
 from violin_scraper.utility.di import service, get_ctx
 
@@ -37,8 +39,7 @@ def proform():
     print(3)
     cookies = driver.get_cookies()
     print(cookies)
-    # TODO: 将cookies完整写入redis中，将spider name作为key
-    # write_to_redis(cookies)
+    write_to_redis(cookies)
     print(4)
     driver.quit()
     print(5)
