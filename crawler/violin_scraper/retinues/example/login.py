@@ -10,6 +10,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
+SPIDERS_NAME = 'example'
+
 def proform():
     chrome_options = Options()
     chrome_options.add_argument('--headless')
@@ -50,8 +52,8 @@ def write_to_redis(cookies):
     r = Redis.get(ctx)
     if not r.is_connected():
         r.connect(password='mypass')
-    r.get_hash("cookie", "example")
-    r.set_hash("cookie", "example", cookies)
+    cookie_list = r.get_hash("cookie", SPIDERS_NAME)
+    r.set_hash("cookie", SPIDERS_NAME, cookies)
 
 
 if __name__ == "__main__":
