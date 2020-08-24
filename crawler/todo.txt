@@ -5,13 +5,15 @@ DONE - Redis wrapper
 DONE - Development mode
 DONE - Move all middleware files into a Separate middlewares folder
 DONE - Enable unit test
-InProgress - Add unittest for redis.py
-InProgress - Allow capture login page.
+DONE - Add unittest for redis.py
+DONE - Prepare a seperate folder for build, include dockerfile, k8sfile etc.
+DONE - Allow capture login page.
+TODO - Store proxies within redis.
+TODO - 使用graphite和grafana进行应用程序监控
 TODO - Implement OCR through the third part component
-- Store proxies within redis.
+TODO - 使用Portainer管理docker UI
 - Rewite retry middleware
 - Make proxy middleware be avaiable
-- Prepare a seperate folder for build, include dockerfile, k8sfile etc.
 - Call baiduyun API to upload or download files.
 - Containerization
 - Distributed
