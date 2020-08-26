@@ -6,5 +6,6 @@ WORKDIR /app
 
 COPY requirements.txt .
 COPY entrypoint.sh .
+COPY ../../crawler .
 
 RUN pip install -r requirements.txt
