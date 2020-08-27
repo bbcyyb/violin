@@ -4,8 +4,10 @@ MAINTAINER bbcyyb <bbcyyb@gmail.com>
 
 WORKDIR /app
 
-COPY requirements.txt .
-COPY entrypoint.sh .
-COPY ../../crawler .
+COPY docker/violin/requirements.txt .
+COPY docker/violin/entrypoint.sh .
+COPY crawler/ crawler/
 
 RUN pip install -r requirements.txt
+
+ENTRYPOINT ["/app/entrypoint.sh"]
