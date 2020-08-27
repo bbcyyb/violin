@@ -1,0 +1,21 @@
+nosudo = $(shell docker version > /dev/null 2>&1 && echo 1)
+ifeq ($(nosudo),1)
+	DOCKER_CMD := docker
+else
+	DOCKER_CMD := sudo docker
+endif
+
+DOCKER_BUILD := $(DOCKER_CMD) build
+DOCKER_RUN := $(DOCKER_CMD) run
+DOCKER_RM := $(DOCKER_CMD) rm
+DOCKER_PS := $(DOCKER_CMD) ps
+
+PROD_IMAGE_NAME := violin-alpine
+PROD_CONTAINER_NAME := violin
+DEV_IMAGE_NAME := violin-alpine-dev
+DEV_CONTAINER_NAME := violin-dev
+
+DOCKERFILE_PROD := docker/violin/Dockerfile
+DOCKERFILE_DEV := docker/violin/Dockerfile
+
+export PROJECT_NAME = violin
