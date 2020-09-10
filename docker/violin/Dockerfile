@@ -1,4 +1,4 @@
-from python:3.7.9-alpine3.12
+from python:3.7.9
 
 MAINTAINER bbcyyb <bbcyyb@gmail.com>
 
