@@ -37,6 +37,9 @@ http://www.66ip.cn/areaindex_1/1.html
 
 https://www.xicidaili.com/
 
+最强python爬虫教程
+https://github.com/wistbean/learn_python3_spider 
+
 
 基于Docker的Scrapy+Scrapyd+Scrapydweb部署
 https://segmentfault.com/a/1190000017785241?utm_source=tag-newest
