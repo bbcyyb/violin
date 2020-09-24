@@ -2,7 +2,7 @@ from scrapy.cmdline import execute
 from violin_scraper.utility.common import running_path
 from violin_scraper.utility.file import File
 from violin_scraper.utility.redis import Redis
-from violin_scraper.utility.di import service, get_ctx 
+from violin_scraper.utility.di import service, get_ctx
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
