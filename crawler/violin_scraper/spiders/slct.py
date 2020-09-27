@@ -49,8 +49,7 @@ class SlctSpider(BaseSpider):
     def parse_detail(self, response):
         # next page
         next_url = response.css(
-            'div.content_left div.nav-links a.prev::attr(href)').extract_first(
-            )
+            'div.content_left div.nav-links a.prev::attr(href)').extract_first()
         if next_url is not None:
             next_url = response.urljoin(next_url)
             yield scrapy.Request(next_url, callback=self.parse_detail)
