@@ -23,4 +23,10 @@ class SmzdmSearchSpider(BaseSpider):
             yield scrapy.Request(url=url, callback=self.parse_root)
 
     def parse_root(self, response):
+        # response.xpath('//*[@id="feed-main-list"]/li[0]/div/div[2]/h5/a[2]').extract()
+        for li in response.xpath('//*[@id="feed-main-list"]/li'):
+            a2 = li.xpath('div/div[2]/h5/a[2]')
+            pushed_data = a2.xpath('@onclick').extract_first()
+            href = a2.xpath('@href').extract_first()
+            price = a2.xpath('div/text()').extract_first().split(u'元')[0]
         pass
