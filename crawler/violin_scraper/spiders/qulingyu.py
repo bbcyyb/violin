@@ -1,0 +1,73 @@
+import scrapy
+from violin_scraper.base_spider import BaseSpider
+from violin_scraper.retinues.slct.items import SlctItem
+from violin_scraper.utility.common import running_path
+
+import os
+
+
+class SlctSpider(BaseSpider):
+    """
+    趣领域
+    https://qulingyu1.com/
+    """
+
+    name = 'qulingyu'
+
+    # Test
+    start_urls = ['https://qulingyu1.com/?post_type=post&s=%E6%A3%AE%E8%90%9D%E8%B4%A2%E5%9B%A2']
+    allowed_domains = ['quliangyu1.com']
+
+    custom_settings = {
+        'DOWNLOADER_MIDDLEWARES': {
+            'violin_scraper.middlewares.exception_downloader.ExceptionMiddleware': 120,
+            'violin_scraper.middlewares.proxy_downloader.ProxyMiddleware': 543,
+            'violin_scraper.middlewares.ua_downloader.UAMiddleware': 544,
+        },
+        'ITEM_PIPELINES': {
+            'violin_scraper.retinues.slct.pipelines.Pipeline': 543,
+        },
+        'IMAGES_STORE':
+        os.path.join(os.path.dirname(os.path.dirname(running_path())),
+                     'images'),
+    }
+
+    def parse(self, response):
+        pass
+
+    # parse list -> detail -> image
+    def parse_(self, response):
+        # next page
+        next_url = response.css(
+            'div.update_area div.update_area_content nav.navigation div.nav-links a.next::attr(href)'
+        ).extract_first()
+        if next_url is not None:
+            next_url = response.urljoin(next_url)
+            yield scrapy.Request(next_url, callback=self.parse)
+
+        # detail page
+        detail_list = response.css(
+            'div.update_area div.update_area_content ul.update_area_lists li a::attr(href)'
+        ).extract()
+        for detail_url in detail_list:
+            detail_url = response.urljoin(detail_url)
+            yield scrapy.Request(detail_url, callback=self.parse_detail)
+
+    def parse_detail(self, response):
+        # next page
+        next_url = response.css(
+            'div.content_left div.nav-links a.prev::attr(href)').extract_first()
+        if next_url is not None:
+            next_url = response.urljoin(next_url)
+            yield scrapy.Request(next_url, callback=self.parse_detail)
+
+        # image page
+        img_selector_list = response.css('div.content_left p img')
+        title = response.css('div.item_title h1::text').extract_first()
+        for img_selector in img_selector_list:
+            item = SlctItem()
+            item['name'] = title
+            img_url = response.urljoin(
+                img_selector.css('img::attr(src)').extract_first())
+            item['img_url'] = [img_url]
+            yield item

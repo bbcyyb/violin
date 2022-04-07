@@ -106,11 +106,11 @@ def test_redis_2():
 # =========================================== #
 
 if __name__ == "__main__":
-    # run()
+    run()
     # test_file()
     # Child.from_init()
     # test_headless_chrome()
-    test_di_1()
+    # test_di_1()
     # test_di_2()
     # test_redis()
     # test_redis_2()
