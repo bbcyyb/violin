@@ -1,6 +1,5 @@
 import scrapy
 import json
-from dateutil import parser
 from violin_scraper.base_spider import BaseSpider
 from violin_scraper.retinues.smzdm_search.items import SmzdmSearchItem
 
