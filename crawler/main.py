@@ -22,7 +22,8 @@ def run():
     # spiders.append('slct')
     # spiders.append('example')
     # spiders.append('proxy')
-    spiders.append('qulingyu')
+    # spiders.append('qulingyu_scan')
+    spiders.append('qulingyu_download')
 
     for spider_name in spiders:
         execute(['scrpy', 'crawl', spider_name, '-a', 'debug={}'.format(DEBUG)])

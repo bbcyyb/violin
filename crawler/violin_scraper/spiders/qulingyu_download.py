@@ -1,21 +1,28 @@
 import scrapy
 from violin_scraper.base_spider import BaseSpider
-from violin_scraper.retinues.slct.items import SlctItem
+from violin_scraper.retinues.qulingyu.items import QulingyuItem
 from violin_scraper.utility.common import running_path
+from violin_scraper.utility.file import File
 
 import os
 
 
-class QuLingYuSpider(BaseSpider):
+class QuLingYuDownloadSpider(BaseSpider):
     """
     趣领域
     https://qulingyu1.com/
     """
 
-    name = 'qulingyu'
+    name = 'qulingyu_download'
+    keyword = 'lingyu'
 
-    host = ['https://qulingyu1.com/?post_type=post&s=%E6%A3%AE%E8%90%9D%E8%B4%A2%E5%9B%A2']
     allowed_domains = ['quliangyu1.com']
+
+    stored_items = []
+
+    main_folder = ''
+    temp_folder = ''
+    csv_file = ''
 
     home_url = 'https://qulingyu1.com'
     username = 'bbcyyb@163.com'
@@ -38,10 +45,26 @@ class QuLingYuSpider(BaseSpider):
             'violin_scraper.middlewares.exception_downloader.ExceptionMiddleware': 120,
         },
         'ITEM_PIPELINES': {
+            'violin_scraper.retinues.qulingyu.pipelines.ImgDownloadPipeline': 300,
         },
         'IMAGES_STORE':
-        os.path.join(os.path.dirname(os.path.dirname(running_path())), 'images'),
+            os.path.join(os.path.dirname(os.path.dirname(running_path())), 'images'),
     }
+
+    def __generate_to_scan_item(self, line):
+        """
+        name, url, num_of_scan, num_of_download, flag
+        """
+        dict_ = {}
+        arr = line.split(',')
+        if len(arr) == 5:
+            dict_['name'] = arr[0]
+            dict_['url'] = arr[1]
+            dict_['num_of_scan'] = arr[2]
+            dict_['num_of_download'] = arr[3]
+            dict_['flag'] = arr[4]
+
+        return dict_
 
     # 爬虫运行的起始位置
     def start_requests(self):
@@ -49,19 +72,26 @@ class QuLingYuSpider(BaseSpider):
         第一步：直接进入Login页面
         """
         print('start qulingyu clawer, go to login page')
+
+        self.main_folder = os.path.dirname(running_path())
+        self.temp_folder = os.path.join(self.main_folder, "temp")
+        self.csv_file = os.path.join(self.temp_folder, f"{self.keyword}.csv")
+
         # 登录页面
         login_page = 'https://qulingyu1.com/login/?r=https%3A%2F%2Fqulingyu1.com%2F'
         req = scrapy.Request(
             url=login_page,
             headers=self.header_data,
-            callback=self.parseLoginPage,
+            callback=self.parse_login,
             dont_filter=True,  # 防止页面因为重复爬取，被过滤了
         )
         yield req
 
+    def parse_login(self, response):
+        print(f"parse login: url = {response.url}")
 
-    def parseLoginPage(self, response):
-        print(f"parseLoginPage: url = {response.url}")
+        # 抓取Token
+        token = response.xpath('//input[@name="token"]/@value').extract_first()
 
         login_post_url = f'{self.home_url}/wp-admin/admin-ajax.php'
         # FormRequest 是Scrapy发送POST请求的方法
@@ -76,19 +106,19 @@ class QuLingYuSpider(BaseSpider):
                 "rememberme": "1",
                 "redirect": self.home_url,
                 "action": "userlogin_form",
-                "token": "bc7b821409"
+                "token": token
             },
-            callback=self.loginResParse,
+            callback=self.parse_login_res,
             dont_filter=True,
         )
 
         # response.xpath('/html/body/div/div/div/a[@class="rlogin login_hre_btn logint"]').extract_first()
 
-    def loginResParse(self, response):
+    def parse_login_res(self, response):
         """
         第三步：分析登录结果，然后发起登录状态的验证请求
         """
-        print(f"loginResParse: url = {response.url}")
+        print(f"parse_login_res,: url = {response.url}")
 
         # 通过访问个人中心页面的返回状态码来判断是否为登录状态
         # 这个页面，只有登录过的用户，才能访问。否则会被重定向(302) 到登录页面
@@ -106,58 +136,54 @@ class QuLingYuSpider(BaseSpider):
                 'dont_redirect': True,  # 禁止网页重定向302, 如果设置这个，但是页面又一定要跳转，那么爬虫会异常
                 # 'handle_httpstatus_list': [301, 302]      # 对哪些异常返回进行处理
             },
-            callback=self.isLoginStatusParse,
+            callback=self.parse,
             dont_filter=True,
         )
 
-    def isLoginStatusParse(self, response):
+    def parse(self, response):
         """
-        第五步:分析用户的登录状态, 如果登录成功，那么接着爬取其他页面
+        第四步:分析用户的登录状态, 如果登录成功，那么接着爬取其他页面
         如果登录失败，爬虫会直接终止。
         """
         print(f"isLoginStatusParse: url = {response.url}")
-
 
         # 如果能进到这一步，都没有出错的话，那么后面就可以用登录状态，访问后面的页面了
         # ………………………………
         # 不需要存储cookie
         # 其他网页爬取
         # ………………………………
-        # TODO: 读取文件获取url并发起请求
+        fr = File()
+        fr.open_file(file=self.csv_file, mode='r')
+        lst = fr.read_lines()
+        fr.close_file()
 
-    # parse list -> detail -> image
-    def parse_(self, response):
-        # next page
-        next_url = response.css(
-            'div.update_area div.update_area_content nav.navigation div.nav-links a.next::attr(href)'
-        ).extract_first()
-        if next_url is not None:
-            next_url = response.urljoin(next_url)
-            yield scrapy.Request(next_url, callback=self.parse)
+        self.stored_items = [self.__generate_to_scan_item(line) for line in lst]
 
-        # detail page
-        detail_list = response.css(
-            'div.update_area div.update_area_content ul.update_area_lists li a::attr(href)'
-        ).extract()
-        for detail_url in detail_list:
-            detail_url = response.urljoin(detail_url)
-            yield scrapy.Request(detail_url, callback=self.parse_detail)
+        for item in self.stored_items:
+            req = scrapy.Request(
+                url=item['url'],
+                headers=self.header_data,
+                callback=self.parse_detail,
+                dont_filter=True,  # 防止页面因为重复爬取，被过滤了
+            )
+
+            yield req
 
     def parse_detail(self, response):
-        # next page
-        next_url = response.css(
-            'div.content_left div.nav-links a.prev::attr(href)').extract_first()
-        if next_url is not None:
-            next_url = response.urljoin(next_url)
-            yield scrapy.Request(next_url, callback=self.parse_detail)
+        """
+        第五步:分析明细页面，抓取所有图片的url
+        """
+        print(f"parse_detail: url = {response.url}")
 
-        # image page
-        img_selector_list = response.css('div.content_left p img')
-        title = response.css('div.item_title h1::text').extract_first()
-        for img_selector in img_selector_list:
-            item = SlctItem()
-            item['name'] = title
-            img_url = response.urljoin(
-                img_selector.css('img::attr(src)').extract_first())
-            item['img_url'] = [img_url]
+        folder_name = response.xpath('//div[@class="item_title"]/h1/text()').extract_first()
+        images = response.xpath('//figure[@class="wp-block-image size-large"]/a[@class="imageclick-imgbox"]/img')
+        store_path = folder_name
+
+        for image in images:
+            url = image.xpath('@data-src').extract_first()
+            name = image.xpath('@alt').extract_first()
+            item = QulingyuItem()
+            item['name'] = name
+            item['url'] = [url]
+            item['path'] = os.path.join(store_path, f"{name}.jpg")
             yield item

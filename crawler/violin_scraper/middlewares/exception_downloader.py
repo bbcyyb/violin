@@ -31,7 +31,7 @@ class ExceptionMiddleware:
                                              to_day.year,
                                              to_day.month,
                                              to_day.day)))
-            f.writeline(record)
+            f.writeline(record, True)
             f.close_file()
         return response
 

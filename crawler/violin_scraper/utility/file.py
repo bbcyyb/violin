@@ -36,6 +36,9 @@ class File:
         else:
             return FileStatus.Closed
 
+    def read_lines(self):
+        return self._file.readlines();
+
     def write(self, str, auto_flush):
         self._file.write(str)
         self._log(str)
