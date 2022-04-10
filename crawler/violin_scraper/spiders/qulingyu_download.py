@@ -184,6 +184,6 @@ class QuLingYuDownloadSpider(BaseSpider):
             name = image.xpath('@alt').extract_first()
             item = QulingyuItem()
             item['name'] = name
-            item['url'] = [url]
+            item['url'] = url
             item['path'] = os.path.join(store_path, f"{name}.jpg")
             yield item
