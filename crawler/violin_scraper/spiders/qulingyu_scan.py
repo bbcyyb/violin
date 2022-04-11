@@ -13,7 +13,10 @@ class QuLingYuScanSpider(BaseSpider):
 
     name = 'qulingyu_scan'
 
-    keyword = 'lingyu'
+    keyword = 'lingyu'  # 领域
+    # keyword = 'wanghong'  # 动漫
+    # keyword = 'taotu'  # 唯美
+
     entry_url = f'https://qulingyu1.com/{keyword}/'
     allowed_domains = ['quliangyu1.com']
 

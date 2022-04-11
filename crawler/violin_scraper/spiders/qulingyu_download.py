@@ -15,6 +15,8 @@ class QuLingYuDownloadSpider(BaseSpider):
 
     name = 'qulingyu_download'
     keyword = 'lingyu'
+    # keyword = 'wanghong'  # 动漫
+    # keyword = 'taotu'  # 唯美
 
     allowed_domains = ['quliangyu1.com']
 
