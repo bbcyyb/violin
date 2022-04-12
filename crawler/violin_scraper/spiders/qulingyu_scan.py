@@ -4,6 +4,7 @@ from violin_scraper.base_spider import BaseSpider
 from violin_scraper.utility.common import running_path
 from violin_scraper.utility.file import File
 
+category_ = os.environ.get('spider_category', '')
 
 class QuLingYuScanSpider(BaseSpider):
     """
@@ -13,9 +14,11 @@ class QuLingYuScanSpider(BaseSpider):
 
     name = 'qulingyu_scan'
 
-    keyword = 'lingyu'  # 领域
+    # keyword = 'lingyu'  # 领域
     # keyword = 'wanghong'  # 动漫
     # keyword = 'taotu'  # 唯美
+
+    keyword = category_
 
     entry_url = f'https://qulingyu1.com/{keyword}/'
     allowed_domains = ['quliangyu1.com']

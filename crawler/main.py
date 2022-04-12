@@ -13,9 +13,44 @@ import time
 
 DEBUG = 1
 os.environ['debug'] = str(DEBUG)
+spider_ = os.environ.get('spider_name', '')
+range_ = os.environ.get('spider_range', '')
+category_ = os.environ.get('spider_category', '')
 
 
 def run():
+
+    if len(spider_) == 0:
+        print("missing spider name, the application is interrupted. exiting...")
+        return
+
+    if len(range_) == 0:
+        print("missing spider range, the application is interrupted. exiting...")
+        return
+
+    if len(category_) == 0:
+        print("missing spider category, the application is interrupted. exiting...")
+        return
+
+    range_array = range_.split(',')
+    if len(range_array) != 2:
+        print("invalid spider_range env variable, the application is interrupted. exiting...")
+        return
+
+    try:
+        range_start = int(range_array[0])
+        range_end = int(range_array[1])
+    except ValueError:
+        print("invalid spider_range variable type, the application is interrupted. exiting...")
+        return
+
+    print("=========================================================")
+    print("Environment Variables")
+    print("=========================================================")
+    print(f"[spider_name] is {spider_}")
+    print(f"[spider_category] is {category_}")
+    print(f"[spider_range] is {range_}")
+
     path = running_path()
     sys.path.append(path)
     spiders = []
@@ -23,7 +58,8 @@ def run():
     # spiders.append('example')
     # spiders.append('proxy')
     # spiders.append('qulingyu_scan')
-    spiders.append('qulingyu_download')
+    # spiders.append('qulingyu_download')
+    spiders.append(spider_)
 
     for spider_name in spiders:
         execute(['scrpy', 'crawl', spider_name, '-a', 'debug={}'.format(DEBUG)])

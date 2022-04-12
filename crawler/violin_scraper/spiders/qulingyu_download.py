@@ -6,6 +6,10 @@ from violin_scraper.utility.file import File
 
 import os
 
+spider_ = os.environ.get('spider_name', '')
+range_ = os.environ.get('spider_range', '')
+category_ = os.environ.get('spider_category', '')
+
 
 class QuLingYuDownloadSpider(BaseSpider):
     """
@@ -14,9 +18,11 @@ class QuLingYuDownloadSpider(BaseSpider):
     """
 
     name = 'qulingyu_download'
-    keyword = 'lingyu'
+
+    # keyword = 'lingyu'
     # keyword = 'wanghong'  # 动漫
     # keyword = 'taotu'  # 唯美
+    keyword = category_
 
     allowed_domains = ['quliangyu1.com']
 
@@ -159,6 +165,12 @@ class QuLingYuDownloadSpider(BaseSpider):
         lst = fr.read_lines()
         fr.close_file()
 
+        # 设定抓取范围，例如: 1,200 or 201, 400
+        range_array = range_.split(',')
+        range_start = int(range_array[0]) - 1
+        range_end = int(range_array[1])
+        lst = lst[range_start:range_end]
+
         self.stored_items = [self.__generate_to_scan_item(line) for line in lst]
 
         for item in self.stored_items:
@@ -187,5 +199,5 @@ class QuLingYuDownloadSpider(BaseSpider):
             item = QulingyuItem()
             item['name'] = name
             item['url'] = url
-            item['path'] = os.path.join(store_path, f"{name}.jpg")
+            item['path'] = os.path.join(os.path.join(self.keyword, store_path), f"{name}.jpg")
             yield item
