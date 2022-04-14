@@ -4,7 +4,8 @@ from violin_scraper.utility.common import running_path
 from violin_scraper.utility.file import File
 
 def run():
-    size = 100
+    size = 90
+    print(f"each script file contains {size} items")
     running_folder = os.path.join(os.path.dirname(running_path()))
     temp_folder = os.path.join(running_folder, 'temp')
 
@@ -20,6 +21,11 @@ def run():
             continue
 
         category_ = os.path.splitext(file)[0]
+        file_type = os.path.splitext(file)[1]
+        if file_type != '.csv':
+            continue
+
+        print(f"load [{file}] from {temp_folder}")
         full_name = os.path.join(temp_folder, file)
         fr = File()
         fr.open_file(file=full_name, mode='r')
@@ -38,12 +44,14 @@ def run():
             end = index
 
             f_name = generate_file(category_, start, end, running_folder)
-            launch_script += f'start {f_name} \n'
+            print(f"generate {f_name}")
+            launch_script += f'start {f_name} \ntimeout 2 \n'
 
     if len(launch_script) > 0:
         fw = File()
         fw.open_file(file=os.path.join(running_folder, 'root.bat'), mode='w')
-        fw.writeline(launch_script, True)
+        fw.write(f"{launch_script}", True)
+        print("generate root.bat")
         fw.close_file()
 
 
